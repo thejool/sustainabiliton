@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game</title>
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+</head>
+
+<body>
+  <style>
+    .frame {
+      background: #fff;
+      overflow: hidden;
+      max-width: 650px;
+      height: 600px;
+      border: 1px solid #000;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .splash {
+      position: absolute;
+      top: 0;
+      right: -10px;
+      bottom: 0;
+      left: -10px;
+      background: url(./assets/splash.png) no-repeat;
+      z-index: 999;
+      background-size: cover;
+      background-position: center center;
+      transition: 1s opacity;
+      opacity: 0;
+    }
+    
+    .splash-visible {
+      opacity: 1;
+    }
+
+    .player {
+      width: 171px;
+      height: 202px;
+      position: absolute;
+      bottom: 60px;
+      left: 90px;
+      overflow: hidden;
+      z-index: 100;
+    }
+
+    .playerGif {
+      position: absolute;
+      top: -73px;
+      left: -85px;
+    }
+
+    .moving-objects {
+      width: 650px;
+      height: 30px;
+      position: absolute;
+      bottom: 60px;
+      display: flex;
+      z-index: 100;
+    }
+
+    .move {
+      animation-name: moveobjects;
+      animation-iteration-count: infinite;
+      animation-timing-function: linear;
+      animation-duration: 12s;
+    }
+    .move1 {
+      animation-duration: 9s;
+    }
+    
+    .move2 {
+      animation-duration: 5s;
+    }
+    
+    .move3 {
+      animation-duration: 4s;
+    }
+
+    @keyframes moveobjects {
+      from {
+        transform: translate(0);
+      }
+
+      to {
+        transform: translate(-3000px);
+      }
+    }
+
+    .object {
+      width: 50px;
+      height: 50px;
+      /* margin-right: 400px; */
+      position: relative;
+    }
+
+    .object img {
+      width: 250px;
+      top: -62px;
+      left: -76px;
+      position: absolute;
+    }
+
+    .clothes {
+      position: absolute;
+      top: 0px;
+      width: 200px;
+    }
+    
+    .bottle {
+      position: absolute;
+      top: -60px;
+      width: 120px;
+    }
+    
+    .machine {
+      position: absolute;
+      top: -100px;
+      width: 200px;
+      animation-duration: 12s;
+    }
+
+    .jump {
+      animation-duration: 2s;
+      animation-name: jumpobject;
+      animation-timing-function: ease-in-out;
+    }
+
+    @keyframes jumpobject {
+      0% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-150px);
+      }
+      
+      100% {
+        transform: translateY(0);
+      }
+    }
+
+    .message {
+      z-index: 9999;
+    }
+
+    .backdrop {
+      z-index: 9998;
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      top: 0;
+      background-color: rgba(0,0,0,.6);
+    }
+
+    .shake {
+      animation: shake 1.82s cubic-bezier(.36,.07,.19,.97) both;
+      transform: translate3d(0, 0, 0);
+      backface-visibility: hidden;
+      perspective: 1000px;
+    }
+
+    @keyframes shake {
+      10%, 90% {
+        transform: translate3d(-1px, 0, 0);
+      }
+      
+      20%, 80% {
+        transform: translate3d(2px, 0, 0)deg);
+      }
+
+      30%, 50%, 70% {
+        transform: translate3d(-4px, 0, 0);
+      }
+
+      40%, 60% {
+        transform: translate3d(4px, 0, 0);
+      }
+    }
+    .lottie-crab {
+      position: absolute;
+      top: -100px;
+      width: 200px;
+    }
+
+    .score {
+      z-index: 9999;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-family: helvetica;
+      color: white;
+      display: flex;
+      align-items: center;
+      font-size: 60px;
+      justify-content: center;
+    }
+
+    .scroll {
+      background-image: url(./assets/scroll-cartoon.png);
+      background-size: contain;
+      width: 400px;
+      height: 420px;
+      position: absolute;
+      top: 50%;
+      margin-top: -210px;
+      left: 50%;
+      margin-left: -200px;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-color: transparent;
+      padding: 73px 90px;
+      box-sizing: border-box;
+      color: #000;
+      font-family: cursive;
+      font-size: 20px;
+    }
+
+    .scroll span {
+      color: red;
+    }
+
+    .restart {
+      z-index: 9999;
+      position: absolute;
+      bottom: 50px;
+      left: 50%;
+      margin-left: -75px;
+      width: 150px;
+      background: crimson;
+      color: #fff;
+      border: 0;
+      border-radius: 5px;
+      padding: 3px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .restart img {
+      width: 50px;
+    }
+
+    .score-bottles {
+      top: 50px;
+    }
+
+    .hide {
+      display: none;
+    }
+
+    .show {
+      display: block
+    }
+
+    .sand {
+      position: absolute;
+      width: 8000px;
+      left: 0;
+      bottom: -30px;
+    }
+
+    .water {
+      position: absolute;
+      width: 100%;
+      left: 0;
+      bottom: 95px;
+      z-index: 1;
+    }
+
+    .mountain {
+      position: absolute;
+      width: 2000px;
+      left: 0;
+      top: 295px;
+      height: 50px;
+      z-index: 1;
+    }
+
+    .mountain.move {
+      animation-duration: 100s;
+      animation-name: changewidth;
+      animation-iteration-count: infinite;
+      animation-timing-function: linear;
+    }
+
+    .sky {
+      top: -20px;
+      position: absolute;
+      left: -35px;
+      height: 350px;
+      background: url(./assets/sky-01-02.png);
+      right: -35px;
+      background-size: cover;
+    }
+
+    @keyframes changewidth {
+      from {
+        transform: translate(0);
+      }
+
+      to {
+        transform: translate(-3000px);
+      }
+    }
+  </style>
+
+  <lottie-player class="lottie-crab" src="https://assets2.lottiefiles.com/packages/lf20_muQOh7.json" background="transparent" speed="1" style="width: 200px; height: 200px; display: none;" loop autoplay></lottie-player>
+
+  <div class="frame">
+    <div class="splash splash-visible">
+    </div>
+    <div class="score">
+      0
+    </div>
+
+    <div class="backdrop hide">
+    </div>
+    <div class="message hide scroll">
+    </div>
+
+    <button class="restart hide">
+      <img src="./assets//restart.png">
+      Restart game
+    </button>
+
+    <div class="player" id="player">
+      <lottie-player class="playerGif" src="https://assets1.lottiefiles.com/packages/lf20_mzbdc0qk.json"
+        background="transparent" speed="1" style="width: 350px; height: 350px;" loop></lottie-player>
+    </div>
+
+    
+    <div class="moving-objects">
+    </div>
+
+    <div class="sand">
+      <img src="./assets/sand.svg">
+    </div>
+    <div class="water">
+      <img src="./assets/water.png">
+    </div>
+    <div class="mountain">
+      <img src="./assets/moutain-01.svg">
+    </div>
+    <div class="sky"></div>
+
+  </div>
+
+
+  <script>
+    // Jump
+    const jumpSound = new Audio("./assets/jump.wav"); 
+    document.body.onkeydown = function (e) {
+      if (e.keyCode == 32) {
+        setTimeout(() => {
+          jumpSound.play();
+        }, 250)
+
+        setTimeout(() => {
+          jumpSound.load();
+        }, 1000)
+
+        const player = document.getElementById('player');
+        if (player.classList.contains('jump')) {
+          console.log('in the air')
+        } else {
+          player.classList.add('jump');
+          const playerObj = document.querySelector(".playerGif");
+          playerObj.setSpeed(0.3)
+          setTimeout(() => {
+            player.classList.remove('jump');
+            playerObj.setSpeed(1)
+          }, 2000);
+        }
+      }
+    }
+
+    const scoreSound = new Audio("./assets/score.wav"); 
+    const winSound = new Audio("./assets/win.wav"); 
+    const looseSound = new Audio("./assets/loose.wav"); 
+    
+    let score = 0
+    let index = 0
+    let gameObjectsInterval
+    let playerInterval
+
+    const startGameObjectsInterval = () => setInterval(() => {
+      console.log('startGameObjectsInterval')
+      index++
+      
+      if(index % 2 == 0) {
+        document.querySelectorAll('.move').forEach((moveObject) => {
+          moveObject.classList.remove('move1')
+          moveObject.classList.remove('move2')
+          moveObject.classList.add('move' + index / 2)
+        })
+      }
+      
+      if(score > 2) {
+        const playerObj = document.querySelector(".playerGif");
+
+        // Slow down player for some reason...
+        playerObj.setSpeed(0.6)
+        
+        setTimeout(() => {
+          playerObj.setSpeed(0.3)
+        }, 1000)
+        
+        setTimeout(() => {
+          playerObj.setSpeed(0.05)
+        }, 2000)
+
+        const objectWrap = document.createElement('div')
+        const object = document.createElement('div')
+        const img = document.createElement('img')
+        object.className = 'object move machine'
+        img.className = 'machine'
+        img.src = './assets/loop-machine.png'
+        object.append(img)
+        objectWrap.append(object)
+  
+        const playerPosition = document.querySelector('.player').getBoundingClientRect()
+        object.style.marginLeft = playerPosition.right + (Math.random() * 100) + 'px'
+        
+        document.querySelector('.moving-objects').innerHTML = objectWrap.innerHTML
+      } else {
+        if(Math.random() > 0.5) {
+          // Spawn objects
+          const objectWrap = document.createElement('div')
+          const object = document.createElement('div')
+          const img = document.createElement('img')
+          if(Math.random() > 0.5) {
+            object.className = 'object move clothes ' + 'move' + index / 2
+            img.className = 'cloths'
+            img.src = './assets/cloths.png'
+          } else {
+            object.className = 'object move bottle ' + 'move' + index / 2
+            img.className = 'bottle'
+            img.src = './assets/bottle1-01.png'
+          }
+          object.append(img)
+          objectWrap.append(object)
+    
+          const playerPosition = document.querySelector('.player').getBoundingClientRect()
+          object.style.marginLeft = playerPosition.right + ((Math.random() * 100) * 2) + 'px'
+          console.log(playerPosition.right + ((Math.random() * 100) * 2) + 'px')
+          
+          document.querySelector('.moving-objects').innerHTML = objectWrap.innerHTML
+        } else {
+          // Spawn crabs
+          const crabWrap = document.createElement('div');
+          const crab = document.querySelector(".lottie-crab");
+          const clonedCrab = crab.cloneNode()
+          clonedCrab.classList.add('object', 'move', 'bad', 'move' + index / 2)
+          const playerPosition = document.querySelector('.player').getBoundingClientRect()
+          clonedCrab.style.marginLeft = playerPosition.right + (Math.random() * 100) + 'px'
+          clonedCrab.style.display = "block"
+
+          crabWrap.appendChild(clonedCrab)
+          document.querySelector('.moving-objects').innerHTML = crabWrap.innerHTML
+        }
+      }
+    }, 4000)
+
+    const startPlayerInterval = () => setInterval(() => {
+      const collision = document.querySelector('.object') && playerColission(document.getElementById('player'), document.querySelector('.object'))
+
+      if (collision && collision.classList.contains('machine')) {
+        document.querySelector('.message').innerHTML = 'We are recycling and upcycling clothes, plastic and other materials to help solving this problem. Find out more about our efforts...'
+        setTimeout(() => {
+          winSound.play();
+        }, 250)
+
+        setTimeout(() => {
+          winSound.load();
+        }, 5000)
+
+        stopGame()
+      } else if (collision && collision.classList.contains('bad')) {
+        document.querySelector('.message').innerHTML = "🦀🦀🦀 <span>Aaooch!!</span> Don't hurt me! But please continue to upcycle the plastic, by 2050 if everything continues as-is, there will be as much fish in the ocean as there is plastic 😱"
+        document.querySelector('.restart').classList.remove('hide')
+        looseSound.play();
+        
+        setTimeout(() => {
+          looseSound.load();
+        }, 6000)
+        
+        stopGame()
+      } else if (collision && (collision.classList.contains('bottle') || collision.classList.contains('clothes'))) {
+        collision.remove()
+        score += 1
+        scoreSound.play();
+
+        setTimeout(() => {
+          scoreSound.load();
+        }, 1000)
+
+        document.querySelector('.score').innerText = score
+      }
+    }, 100)
+
+    const stopGame = () => {
+      document.querySelectorAll('.move').forEach((object) => object.classList.remove('move'))
+      document.querySelector('.frame').classList.add('shake')
+      document.querySelector('.backdrop').classList.remove('hide')
+      document.querySelector('.message').classList.remove('hide')
+
+      const player = document.querySelector(".playerGif");
+      player.pause()
+      clearInterval(gameObjectsInterval)
+      clearInterval(playerInterval)
+    }
+    
+    const startGame = () => {
+      document.querySelector('.sand').classList.add('move')
+      document.querySelector('.mountain').classList.add('move')
+      document.querySelector('.message').classList.add('hide')
+      document.querySelector('.backdrop').classList.add('hide')
+      document.querySelector('.restart').classList.add('hide')
+      score = 0
+      document.querySelector('.score').innerText = score
+
+      setTimeout(() => {
+        document.querySelector('.splash').classList.add('hide')
+      }, 1000)
+
+      document.querySelector('.backdrop').classList.add('hide')
+      document.querySelector('.message').classList.add('hide')
+
+      const player = document.querySelector(".playerGif");
+      player.setSpeed(1)
+      player.play()
+      gameObjectsInterval = startGameObjectsInterval()
+      playerInterval = startPlayerInterval()
+    }
+
+    function playerColission(player, object) {
+      let isColliding = false
+      const playerArea = player.getBoundingClientRect()
+      const objectArea = object.getBoundingClientRect()
+
+      if(!player.classList.contains('jump') && playerArea.right > objectArea.left && playerArea.right < objectArea.left + objectArea.width ) {
+        isColliding = object
+      }
+      
+      return isColliding
+    }
+
+    document.querySelector('.restart').addEventListener('click', startGame)
+    document.querySelector('.splash').addEventListener('click', () => {
+      document.querySelector('.splash').classList.remove('splash-visible')
+      startGame()
+    })
+  </script>
+
+
+  <!-- Re-start game
+  Music - indiana jones
+  Add splash screen X
+  Maybe look at collision
+
+-->
+  
+  </body>
+</html>
+
