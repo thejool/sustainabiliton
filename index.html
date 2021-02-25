@@ -394,7 +394,7 @@
       console.log('startGameObjectsInterval')
       index++
       
-      if(index % 2 == 0) {
+      if(index % 2 == 0 && index < 9) {
         document.querySelectorAll('.move').forEach((moveObject) => {
           moveObject.classList.remove('move1')
           moveObject.classList.remove('move2')
@@ -406,15 +406,15 @@
         const playerObj = document.querySelector(".playerGif");
 
         // Slow down player for some reason...
-        playerObj.setSpeed(0.6)
+        playerObj.setSpeed(0.7)
         
         setTimeout(() => {
           playerObj.setSpeed(0.3)
-        }, 1000)
+        }, 3000)
         
         setTimeout(() => {
           playerObj.setSpeed(0.05)
-        }, 2000)
+        }, 4500)
 
         const objectWrap = document.createElement('div')
         const object = document.createElement('div')
@@ -436,11 +436,11 @@
           const object = document.createElement('div')
           const img = document.createElement('img')
           if(Math.random() > 0.5) {
-            object.className = 'object move clothes ' + 'move' + index / 2
+            object.className = 'object move clothes ' //+ 'move' + index / 2
             img.className = 'cloths'
             img.src = './assets/cloths.png'
           } else {
-            object.className = 'object move bottle ' + 'move' + index / 2
+            object.className = 'object move bottle ' //+ 'move' + index / 2
             img.className = 'bottle'
             img.src = './assets/bottle1-01.png'
           }
@@ -448,8 +448,7 @@
           objectWrap.append(object)
     
           const playerPosition = document.querySelector('.player').getBoundingClientRect()
-          object.style.marginLeft = playerPosition.right + ((Math.random() * 100) * 2) + 'px'
-          console.log(playerPosition.right + ((Math.random() * 100) * 2) + 'px')
+          object.style.marginLeft = playerPosition.right + (Math.random() * 100) + 'px'
           
           document.querySelector('.moving-objects').innerHTML = objectWrap.innerHTML
         } else {
@@ -457,7 +456,7 @@
           const crabWrap = document.createElement('div');
           const crab = document.querySelector(".lottie-crab");
           const clonedCrab = crab.cloneNode()
-          clonedCrab.classList.add('object', 'move', 'bad', 'move' + index / 2)
+          clonedCrab.classList.add('object', 'move', 'bad')
           const playerPosition = document.querySelector('.player').getBoundingClientRect()
           clonedCrab.style.marginLeft = playerPosition.right + (Math.random() * 100) + 'px'
           clonedCrab.style.display = "block"
@@ -466,7 +465,7 @@
           document.querySelector('.moving-objects').innerHTML = crabWrap.innerHTML
         }
       }
-    }, 4000)
+    }, 6000)
 
     const startPlayerInterval = () => setInterval(() => {
       const collision = document.querySelector('.object') && playerColission(document.getElementById('player'), document.querySelector('.object'))
